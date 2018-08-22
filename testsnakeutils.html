@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Test page for snakeutil.js</title>
+
+<script type="application/javascript" src="snakeutils.js"></script>
+<script type="application/javascript" src="testsnakeutils.js"></script>
+
+<script type="application/javascript">
+
+var starttesting = function() {
+    test_Snake_Collision_HeadPosBeforeTailPos_ReturnsFalse_WhenNoCollision();
+    test_Snake_Collision_HeadPosBeforeTailPos_ReturnsTrue_WhenCollision();
+
+    console.log("Test finished:  snakeutil.js");
+};
+
+</script>
+</head>
+<body onload="starttesting();">
+</body>
+</html>

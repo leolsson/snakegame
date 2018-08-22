@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8"/>
+  
+  <script type="application/javascript" src="snakeutils.js"></script>
+  
+  <script type="application/javascript">
+
+  	var LEFT = 1;
+	var UP = 2;
+	var RIGHT = 3;
+	var DOWN = 4;
+
+  	var KEY_LEFT = 37;
+	var KEY_UP = 38;
+	var KEY_RIGHT = 39;
+	var KEY_DOWN = 40;
+
+  
+    function draw() {
+		var canvas = document.getElementById('canvas');
+		if (canvas.getContext) {
+			var ctx = canvas.getContext('2d');
+		
+			// GRÖN CIRKEL FUNKTION
+			var drawCircle = function(circleX, circleY, circleize, circleFill) {
+				ctx.beginPath();
+				ctx.arc(circleX, circleY, circleize, 0, 360);
+				ctx.fillStyle = "green";
+				if(circleFill === true) {
+					ctx.fill();
+				} else {
+					ctx.stroke();
+				}
+			};
+			
+			// RÖD CIRKEL FUNKTION
+			var drawRedCircle = function(circleX, circleY, circleize, circleFill) {
+				ctx.beginPath();
+				ctx.arc(circleX, circleY, circleize, 0, 360);
+				ctx.fillStyle = "red";
+				if(circleFill === true) {
+					ctx.fill();
+				} else {
+					ctx.stroke();
+				}
+			};
+		
+		
+			// FUNKTION FÖR I VILKEN RIKTNING FRAM PÅ ORMEN ÄR
+			var ormRiktning = RIGHT;
+		
+			// 1 = ormen pekar åt vänster
+			// 2 = ormen pekar upp
+			// 3 = ormen pekar åt höger
+			// 4 = ormen pekar ner 
+		
+			document.addEventListener("keydown",function(e){
+				if(e.which === KEY_LEFT){ // VÄNSTER-PIL
+					if(ormRiktning === UP){
+						ormRiktning = LEFT;	
+					}
+					if(ormRiktning === DOWN){
+						ormRiktning = LEFT;
+					}	
+				}
+				if(e.which === KEY_UP){ // UPP-PIL
+					if(ormRiktning === LEFT){
+						ormRiktning = UP;	
+					}
+					if(ormRiktning === RIGHT){
+						ormRiktning = UP;
+					}	
+				}
+				if(e.which === KEY_RIGHT){ // HÖGER-PIL
+					if(ormRiktning === UP){
+						ormRiktning = RIGHT;	
+					}
+					if(ormRiktning === DOWN){
+						ormRiktning = RIGHT;
+					}	
+				}
+				if(e.which === KEY_DOWN){ // NER-PIL
+					if(ormRiktning === LEFT){
+						ormRiktning = DOWN;	
+					}
+					if(ormRiktning === RIGHT){
+						ormRiktning = DOWN;
+					}
+				}
+			});
+		
+		// SPELPLAN FUNKTION
+		var drawSpelplan = function(x, y, width, height) {
+			ctx.fillStyle = "BLACK";
+			ctx.fillRect(x, y, width, height);
+			ctx.clearRect(x + 15, y + 15, width - 30, height - 30);
+			ctx.font = '48px serif';
+			ctx.fillText("poäng: " + score, width - 220, 50);
+		};
+		
+		// STARTPOSITIONERNA FÖR ORMEN
+		var x = 25;
+		var y = 75;
+		
+		// START LÄNGDEN PÅ ORMEN
+		var ormLangd = 50;
+		
+		// SKAPAR VARIABLERNA X OCH Y FÖR POSITIONERNA FÖR CIRKLARNA SOM ORMEN BESTÅR AV
+		var xPositionerCirklar = [x];
+		var yPositionerCirklar = [y];
+		
+		// FYLLER DE TIDIGARE VARIABLERNA MED STARTVÄRDEN
+		for (var i = 0; i < ormLangd; i++) {
+			xPositionerCirklar[i] = x++;
+			yPositionerCirklar[i] = y;
+		}
+		
+		// SKAPAR numCirkelLangstbak OCH numCirkelLangstfram OCH GER DEM DESS STARTVÄRDEN
+		var numCirkelLangstbak = 0;
+		var numCirkelLangstfram = ormLangd - 1;
+		
+		
+		// VARIABLER SOM INNEHÅLLER X OCH Y VÄRDEN FRAMFÖR HUVUDET PÅ ORMEN
+		var xFramförHuvudet = x + (ormLangd + 4);
+		var yFramförHuvudet = y;
+		
+		// X OCH Y POSITIONER FÖR PUNKTEN OCH SLUMPADE STARTVÄRDEN
+		var xPunkt = Math.round(((Math.random() * 640) + 30));
+		var yPunkt = Math.round(((Math.random() * 240) + 30));
+		
+		// FUNKTION FÖR VAD SOM SKA HÄNDA NÄR MAN DÖR
+		var gameOver = function() {
+			spelAktivt = false;
+			ctx.fillStyle = "black";
+			ctx.font = '58px serif';
+			ctx.fillText("GAME OVER", 120, 100);
+			ctx.font = '38px serif';
+			ctx.fillText("Du fick " + score + " poäng", 155, 140);
+			ctx.fillText("Tryck ner enter för att spela igen", 60, 180);
+		}; 
+		
+		
+		// VARIABEL SOM HÅLLER KOLL PÅ POÄNGEN
+		var score = 0;
+		
+		// VARIABEL SOM HÅLLER KOLL PÅ NÄR executeGame SKA UPPDATERAS
+		var spelAktivt = false;
+		
+		// SPELPLAN
+			drawSpelplan(0, 0, 700, 300);
+			
+		//  RITAR PUNKT
+		drawRedCircle(xPunkt, yPunkt, 5, true);
+		
+		// RITAR ORMEN
+		for (var i = 0; i < ormLangd; i++) {
+			drawCircle(xPositionerCirklar[i] , yPositionerCirklar[i], 5, true);
+		}
+		
+		ctx.fillStyle = "black";
+		ctx.font = '48px serif';
+		ctx.fillText("Tryck ner enter för att starta", 90, 150);
+		
+		
+		document.addEventListener("keydown",function(e){
+				if(e.which === 13){
+					spelAktivt = true;
+					if(spelAktivt === false) {
+						
+					}
+					}
+				});
+		
+		
+		
+		// SPELFUNKTIONER SOM SKA UPPDATERAS
+		var executeGame = function() {
+			if (spelAktivt === true) {	
+			// SPELPLAN
+			drawSpelplan(0, 0, 700, 300);
+			
+			//  RITAR PUNKT
+			drawRedCircle(xPunkt, yPunkt, 5, true);
+			
+			/* Lennart test of point collision */
+			if (isSnakeCollisionWithPoint(xPositionerCirklar, yPositionerCirklar, numCirkelLangstfram, 5, xPunkt, yPunkt, 5)) {
+			
+					// LÄGGER TILL DE NYA X OCH Y POSITIONERNA SOM TILLKOMMER NÄR ORMEN SKA BLI LÄNGRE
+					ormLangd += 25;
+					xPositionerCirklar.push(xPositionerCirklar[(ormLangd - 26)]);
+					yPositionerCirklar.push(yPositionerCirklar[(ormLangd - 26)]);
+					
+					// GER PUNKTEN EN NY X OCH Y POSITION
+					xPunkt = Math.round(((Math.random() * 640) + 30));
+					yPunkt = Math.round(((Math.random() * 240) + 30));
+					
+						score++;
+			}
+			
+			
+			/* Lennart test collision gameboard */
+			if (isSnakeCollisionGameBoard(xPositionerCirklar, yPositionerCirklar, numCirkelLangstfram, 5, 0+15, 700-15, 0+15, 300-15)) {
+			    gameOver();
+			}
+				
+			
+			/*  Lennart test collision snake*/
+			if (isSnakeCollisionWithItSelf(xPositionerCirklar, yPositionerCirklar, numCirkelLangstfram, ormLangd, 5) ) {
+			    console.log("Gameover ormLangd = " + ormLangd + "  numCirkelLangstfram = " + numCirkelLangstfram);
+				gameOver();
+			} 
+			
+			
+			
+			// RITAR ORMEN
+			for (var i = 0; i < ormLangd; i++) {
+				drawCircle(xPositionerCirklar[i] , yPositionerCirklar[i], 5, true);
+			}
+			
+			// RÄKNAR UT VART CIRKELN LÄNGST BAK SKA FLYTTAS TILL NÄSTA GÅNG executeGame UPPDATERAS
+			if (ormRiktning === RIGHT) {
+				xPositionerCirklar[numCirkelLangstbak] = xPositionerCirklar[numCirkelLangstfram] + 1;
+				yPositionerCirklar[numCirkelLangstbak] = yPositionerCirklar[numCirkelLangstfram];
+			}
+			
+			if (ormRiktning === UP) {
+				yPositionerCirklar[numCirkelLangstbak] = yPositionerCirklar[numCirkelLangstfram] - 1;
+				xPositionerCirklar[numCirkelLangstbak] = xPositionerCirklar[numCirkelLangstfram];
+			}
+			
+			if (ormRiktning === LEFT) {
+				xPositionerCirklar[numCirkelLangstbak] = xPositionerCirklar[numCirkelLangstfram] - 1;
+				yPositionerCirklar[numCirkelLangstbak] = yPositionerCirklar[numCirkelLangstfram];
+			}
+			
+			if (ormRiktning === DOWN) {
+				yPositionerCirklar[numCirkelLangstbak] = yPositionerCirklar[numCirkelLangstfram] + 1;
+				xPositionerCirklar[numCirkelLangstbak] = xPositionerCirklar[numCirkelLangstfram];
+			}
+			
+			// RÄKNAR UT VILKET NUMMER PÅ CIRKEL SOM BEFINNER SIG LÄNGST BAK I ORMEN
+			if (numCirkelLangstbak < (ormLangd - 1)) {
+				numCirkelLangstbak++;
+			} else {
+				numCirkelLangstbak = 0;
+			}
+
+			// RÄKNAR UT VILKET NUMMER PÅ CIRKEL SOM BEFINNER SIG LÄNGST FRAM I ORMEN
+			if (numCirkelLangstfram < (ormLangd - 1)) {
+				numCirkelLangstfram++;
+			} else {
+				numCirkelLangstfram = 0;
+			}
+			
+			}
+
+		};
+		
+		// UPPDATERAR executeGame VARJE 10 MILLISEKUNDER
+		setInterval(executeGame, 10);
+		
+		}
+    }
+	
+  </script>
+ </head>
+ <body onload="draw();">
+   <canvas id="canvas" width="700" height="300"></canvas>
+ </body>
+</html>
